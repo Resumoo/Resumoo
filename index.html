@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="ResumeForge — AI-powered resume optimization. Beat ATS filters, get 3× more interviews. From $9.99. 48-hour delivery guaranteed.">
+<meta name="theme-color" content="#0a0a0a">
+<meta property="og:title" content="ResumeForge — Land More Interviews">
+<meta property="og:description" content="We rewrite your resume using AI + human expertise. Beat ATS, 3× more callbacks. From $9.99.">
+<title>ResumeForge — Land More Interviews. Get Paid More.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0a0a0a;--dark:#111;--card:#161616;--border:#242424;--offwhite:#f2ece0;--cream:#e0d8c8;--muted:#7a7060;--gold:#c9a84c;--gold2:#e8c96a;--green:#2d6a4f;--rust:#c45c2e;--nav-h:64px;--max-w:1200px;--pad:clamp(16px,5vw,64px);--r:6px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--black);color:var(--offwhite);font-family:'Outfit',sans-serif;font-size:15px;font-weight:300;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+button,a{font-family:inherit}
+
+/* ── TOP RATING BAR ── */
+#rating-bar{background:linear-gradient(90deg,#1a1500,#111,#1a1500);border-bottom:1px solid rgba(201,168,76,.25);padding:0 var(--pad);height:38px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:fixed;top:0;left:0;right:0;z-index:600;transition:transform .3s ease}
+#rating-bar.hidden{transform:translateY(-100%)}
+.rb-left{display:flex;align-items:center;gap:10px;flex:1}
+.rb-stars{display:flex;gap:2px}
+.rb-star{color:var(--gold);font-size:13px;line-height:1}
+.rb-text{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cream)}
+.rb-text span{color:var(--gold);font-weight:500}
+.rb-avg{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);font-weight:500}
+.rb-btn{background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);color:var(--gold);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:var(--r);cursor:pointer;transition:all .2s;white-space:nowrap}
+.rb-btn:hover{background:rgba(201,168,76,.22);border-color:var(--gold)}
+.rb-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:4px 6px;border-radius:3px;flex-shrink:0;transition:color .2s}
+.rb-close:hover{color:var(--offwhite)}
+body.bar-visible nav{top:38px}
+body.bar-visible{padding-top:38px}
+
+/* ── SKIP LINK ── */
+.skip{position:absolute;top:-999px;left:16px;background:var(--gold);color:var(--black);padding:10px 20px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;z-index:9999;border-radius:var(--r)}
+.skip:focus{top:16px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:500;background:rgba(10,10,10,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 var(--pad);gap:16px}
+.nav-logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;flex-shrink:0}
+.nav-links{display:flex;gap:24px;list-style:none;margin-left:auto}
+.nav-links a{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s}
+.nav-links a:hover,.nav-links a:focus{color:var(--offwhite)}
+.nav-cta{margin-left:8px;background:var(--gold);color:var(--black)!important;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:10px 20px;text-decoration:none;font-weight:500;flex-shrink:0;transition:background .25s;border-radius:var(--r);border:none;cursor:pointer}
+.nav-cta:hover,.nav-cta:focus{background:var(--gold2)}
+.hamburger{display:none;margin-left:auto;background:none;border:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;cursor:pointer;padding:6px;border-radius:var(--r)}
+.hamburger span{display:block;width:22px;height:2px;background:var(--offwhite);transition:all .3s;border-radius:2px}
+.hamburger[aria-expanded=true] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger[aria-expanded=true] span:nth-child(2){opacity:0}
+.hamburger[aria-expanded=true] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+#mnav{display:none;position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;background:var(--dark);z-index:499;flex-direction:column;padding:32px var(--pad);gap:4px;overflow-y:auto}
+#mnav.open{display:flex}
+#mnav a{font-size:18px;color:var(--offwhite);text-decoration:none;padding:14px 0;border-bottom:1px solid var(--border);font-weight:400}
+#mnav a:last-child{border-bottom:none}
+#mnav .m-cta{margin-top:20px;background:var(--gold);color:var(--black);padding:16px;text-align:center;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:500;border-radius:var(--r);border-bottom:none!important}
+
+/* ── HERO ── */
+.hero{padding-top:calc(var(--nav-h) + clamp(48px,8vw,100px));padding-bottom:clamp(64px,10vw,120px);padding-left:var(--pad);padding-right:var(--pad);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;max-width:var(--max-w);margin:0 auto}
+.hero-kicker{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:10px;animation:fadeUp .7s ease .1s both}
+.hero-kicker::before{content:'';display:block;width:24px;height:1px;background:var(--gold)}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,88px);font-weight:900;line-height:1.02;margin-bottom:22px;animation:fadeUp .7s ease .2s both}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:clamp(14px,2vw,17px);color:var(--muted);line-height:1.75;margin-bottom:36px;max-width:460px;animation:fadeUp .7s ease .3s both}
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px;align-items:center;animation:fadeUp .7s ease .4s both}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:15px 30px;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:background .25s,transform .2s;border-radius:var(--r)}
+.btn-primary:hover,.btn-primary:focus{background:var(--gold2);transform:translateY(-1px)}
+.btn-ghost{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-family:'DM Mono',monospace;transition:color .25s}
+.btn-ghost:hover,.btn-ghost:focus{color:var(--offwhite)}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:44px;padding-top:36px;border-top:1px solid var(--border);animation:fadeUp .7s ease .5s both}
+.stat{padding-right:16px}
+.stat+.stat{border-left:1px solid var(--border);padding-left:16px}
+.stat-num{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--gold);line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:11px;color:var(--muted)}
+.hero-vis{display:flex;justify-content:center;align-items:center;animation:fadeIn 1s ease .6s both}
+.card-wrap{position:relative;width:min(320px,100%);height:280px}
+.rc{position:absolute;background:var(--card);border:1px solid var(--border);padding:20px;border-radius:var(--r);width:82%}
+.rc.before{top:0;left:0}
+.rc.after{bottom:0;right:0;background:#1a1a10;border-color:var(--gold);box-shadow:0 8px 48px rgba(201,168,76,.15);animation:float 5s ease-in-out infinite}
+.cl{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.cl.m{color:var(--muted)}.cl.g{color:var(--gold)}
+.mb{height:6px;border-radius:3px;background:var(--border);margin-bottom:7px}
+.mb.w30{width:30%}.mb.w55{width:55%}.mb.w80{width:80%}.mb.w100{width:100%}
+.mb.g{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.mn{height:10px;border-radius:3px;width:50%;background:#2a2a2a;margin-bottom:14px}
+.mn.g{background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.sr{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)}
+.sn{font-size:20px;font-weight:500}.sn.bad{color:var(--rust)}.sn.good{color:var(--green)}
+
+/* ── MARQUEE ── */
+.mq-wrap{overflow:hidden;background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:13px 0}
+.mq-track{display:flex;gap:0;animation:marquee 22s linear infinite;width:max-content}
+.mq-item{display:flex;align-items:center;gap:14px;padding:0 28px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.mq-dot{width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0}
+
+/* ── SECTION ── */
+.section{padding:clamp(56px,10vw,112px) var(--pad);max-width:var(--max-w);margin:0 auto}
+.stag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.stag::before{content:'';display:block;width:20px;height:1px;background:var(--gold)}
+.stitle{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.1;margin-bottom:52px}
+
+/* ── STEPS ── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.step{background:var(--card);padding:clamp(24px,4vw,44px) clamp(18px,3vw,36px);position:relative;overflow:hidden;transition:background .3s;border-radius:var(--r)}
+.step:hover{background:#1c1c1c}
+.snum{font-family:'Playfair Display',serif;font-size:68px;font-weight:900;color:#1e1e1e;position:absolute;top:-6px;right:14px;line-height:1;pointer-events:none;transition:color .3s}
+.step:hover .snum{color:#272727}
+.sico{font-size:24px;margin-bottom:14px}
+.stit{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:10px}
+.sdesc{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* ── TRUST BAR ── */
+.tbar{background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px var(--pad);display:flex;flex-wrap:wrap;justify-content:center;gap:20px 36px}
+.titem{display:flex;align-items:center;gap:9px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tico{font-size:17px}
+
+/* ── PRICING ── */
+.pricing-bg{background:var(--dark);padding:clamp(56px,10vw,112px) var(--pad)}
+.pricing-in{max-width:var(--max-w);margin:0 auto}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.plan{background:var(--card);padding:clamp(24px,4vw,44px) clamp(18px,3vw,36px);display:flex;flex-direction:column;border-radius:var(--r);transition:transform .25s}
+.plan:hover{transform:translateY(-2px)}
+.plan.feat{background:var(--gold);color:var(--black)}
+.pbadge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;background:var(--black);color:var(--gold);padding:4px 10px;display:inline-block;margin-bottom:18px;border-radius:2px;width:fit-content}
+.pname{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:4px}
+.pprice{font-family:'DM Mono',monospace;font-size:48px;font-weight:500;line-height:1;margin-bottom:4px;display:flex;align-items:flex-start;gap:2px}
+.pprice sup{font-size:18px;margin-top:9px}
+.pdesc{font-size:12px;opacity:.55;margin-bottom:24px}
+.pfeats{list-style:none;margin-bottom:28px;flex:1}
+.pfeats li{font-size:14px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:flex-start;gap:9px}
+.plan.feat .pfeats li{border-bottom-color:rgba(0,0,0,.1)}
+.pfeats li::before{content:'✓';font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);flex-shrink:0;margin-top:2px}
+.plan.feat .pfeats li::before{color:var(--black)}
+.pbtn{display:flex;align-items:center;justify-content:center;width:100%;padding:14px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:500;cursor:pointer;text-decoration:none;border-radius:var(--r);transition:all .25s;border:1px solid transparent}
+.pbtn-out{background:transparent;border-color:var(--border);color:var(--muted)}
+.pbtn-out:hover,.pbtn-out:focus{border-color:var(--gold);color:var(--gold)}
+.pbtn-dark{background:var(--black);color:var(--gold);border-color:var(--black)}
+.pbtn-dark:hover,.pbtn-dark:focus{background:#1a1a08}
+.pnote{font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
+.plan.feat .pnote{color:rgba(0,0,0,.4)}
+.pay-chips{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;flex-wrap:wrap}
+.pay-chips span{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace}
+.chip{background:var(--card);border:1px solid var(--border);border-radius:3px;padding:4px 9px;font-size:12px;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* ── TESTIMONIALS ── */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.testi{background:var(--card);padding:clamp(20px,3vw,36px);border-radius:var(--r)}
+.stars{color:var(--gold);font-size:12px;letter-spacing:2px;margin-bottom:12px}
+.tquote{font-family:'Playfair Display',serif;font-size:15px;font-style:italic;line-height:1.65;margin-bottom:20px;color:var(--cream)}
+.tauth{display:flex;align-items:center;gap:11px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.aname{font-size:13px;font-weight:500;margin-bottom:2px}
+.arole{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* ── CTA SECTION ── */
+.cta-sec{background:var(--gold);color:var(--black);padding:clamp(56px,12vw,112px) var(--pad);text-align:center}
+.ctag{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.45;margin-bottom:14px}
+.ctitle{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,64px);font-weight:900;line-height:1.1;margin-bottom:16px}
+.csub{font-size:15px;opacity:.55;margin-bottom:36px}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--black);color:var(--gold);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;padding:16px 36px;font-weight:500;text-decoration:none;border:none;cursor:pointer;border-radius:var(--r);transition:background .25s,transform .2s}
+.cta-btn:hover,.cta-btn:focus{background:#1a1a08;transform:translateY(-1px)}
+
+/* ── FOOTER ── */
+footer{background:var(--dark);border-top:1px solid var(--border);padding:clamp(28px,5vw,44px) var(--pad);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px}
+.flogo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+.flinks{display:flex;gap:22px;flex-wrap:wrap}
+.flinks a{font-size:11px;color:var(--muted);text-decoration:none;transition:color .25s}
+.flinks a:hover,.flinks a:focus{color:var(--offwhite)}
+.fcopy{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* ── MODAL ── */
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:600;display:none;align-items:flex-end;justify-content:center;padding:0}
+@media(min-width:600px){#modal{align-items:center;padding:20px}}
+#modal.open{display:flex}
+.mbox{background:var(--dark);border:1px solid var(--border);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;padding:clamp(22px,5vw,48px);position:relative;animation:slideUp .4s cubic-bezier(.23,1,.32,1)}
+@media(min-width:600px){.mbox{border-radius:var(--r);animation:scaleIn .35s cubic-bezier(.23,1,.32,1)}}
+.mclose{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1;padding:4px 8px;border-radius:var(--r);transition:color .2s}
+.mclose:hover,.mclose:focus{color:var(--offwhite)}
+.mtitle{font-family:'Playfair Display',serif;font-size:clamp(22px,5vw,30px);font-weight:700;margin-bottom:4px}
+.msub{font-size:13px;color:var(--muted);margin-bottom:26px}
+.plan-pill{background:var(--gold);color:var(--black);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:5px 12px;display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;border-radius:3px}
+.plan-pill button{background:none;border:none;font-family:'DM Mono',monospace;font-size:10px;color:rgba(0,0,0,.5);cursor:pointer;padding:0;text-decoration:underline}
+.plan-pill button:hover{color:var(--black)}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;background:var(--black);border:1px solid var(--border);color:var(--offwhite);padding:12px 14px;font-family:'Outfit',sans-serif;font-size:15px;outline:none;transition:border-color .25s;border-radius:var(--r);appearance:none;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7060' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.field textarea{resize:vertical;min-height:76px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pay-stitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:20px 0 12px}
+.pay-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.popt{border:1px solid var(--border);background:var(--black);border-radius:var(--r);padding:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:border-color .25s,background .25s;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.popt:hover,.popt:focus{border-color:var(--gold);color:var(--offwhite);background:#0f0f0a}
+.popt .ico{font-size:22px}
+.btn-sub{width:100%;margin-top:18px;background:var(--gold);color:var(--black);border:none;padding:15px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:500;cursor:pointer;border-radius:var(--r);transition:background .25s,transform .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-sub:hover,.btn-sub:focus{background:var(--gold2);transform:translateY(-1px)}
+.btn-sub:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.sec-note{text-align:center;margin-top:10px;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;display:flex;align-items:center;justify-content:center;gap:6px}
+.ferr{color:var(--rust);font-size:13px;margin-top:10px;display:none}
+.spinner{width:15px;height:15px;border:2px solid rgba(0,0,0,.3);border-top-color:var(--black);border-radius:50%;animation:spin .7s linear infinite;display:none}
+.success-st{display:none;text-align:center;padding:20px 0}
+.sico-big{font-size:50px;margin-bottom:14px}
+.stit-big{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px}
+.sbody{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* ── FREE TOOL ── */
+.ft-input{width:100%;background:var(--black);border:1px solid var(--border);color:var(--offwhite);padding:12px 14px;font-family:'Outfit',sans-serif;font-size:15px;outline:none;border-radius:var(--r);transition:border-color .25s;appearance:none;-webkit-appearance:none;display:block}
+.ft-input:focus{border-color:var(--gold)}
+.ft-btn-next{width:100%;padding:15px;background:var(--gold);color:var(--black);border:none;border-radius:var(--r);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .25s}
+.ft-btn-next:hover{background:var(--gold2)}
+.ft-btn-next:disabled{opacity:.5;cursor:not-allowed}
+/* Resume preview styles */
+#ft-resume-card h1{font-size:clamp(20px,3vw,28px);font-weight:700;color:#0a0a0a;margin-bottom:2px;letter-spacing:-.02em}
+#ft-resume-card .resume-contact{font-size:12px;color:#555;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:6px 16px}
+#ft-resume-card .resume-section{margin-bottom:22px}
+#ft-resume-card .resume-section-title{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8a7a5c;font-family:'DM Mono',monospace;border-bottom:1px solid #ddd;padding-bottom:6px;margin-bottom:12px}
+#ft-resume-card .resume-summary{font-size:14px;color:#333;line-height:1.7}
+#ft-resume-card .exp-item{margin-bottom:14px}
+#ft-resume-card .exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:4px;margin-bottom:4px}
+#ft-resume-card .exp-role{font-size:14px;font-weight:600;color:#111}
+#ft-resume-card .exp-dates{font-size:12px;color:#888;font-family:'DM Mono',monospace;white-space:nowrap}
+#ft-resume-card .exp-company{font-size:13px;color:#555;margin-bottom:6px}
+#ft-resume-card .exp-bullets{list-style:none;padding:0}
+#ft-resume-card .exp-bullets li{font-size:13px;color:#333;padding:3px 0 3px 16px;position:relative;line-height:1.6}
+#ft-resume-card .exp-bullets li::before{content:'▸';position:absolute;left:0;color:#c9a84c;font-size:11px;top:5px}
+#ft-resume-card .skills-wrap{display:flex;flex-wrap:wrap;gap:7px}
+#ft-resume-card .skill-tag{background:#f0ebe0;border:1px solid #ddd;border-radius:3px;padding:4px 10px;font-size:12px;color:#333;font-family:'DM Mono',monospace}
+#ft-resume-card .cert-list{font-size:13px;color:#333;line-height:1.9}
+#ft-resume-card .lang-list{font-size:13px;color:#333;line-height:1.9}
+#ft-resume-card .free-watermark{text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid #eee;font-size:11px;color:#bbb;font-family:'DM Mono',monospace;letter-spacing:.1em}
+
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── RESPONSIVE TABLET ── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:44px}
+  .hero-vis{order:-1}
+  .hero-sub{max-width:100%}
+  .steps{grid-template-columns:1fr;gap:2px}
+  .plans{grid-template-columns:1fr;gap:14px}
+  .tgrid{grid-template-columns:1fr;gap:2px}
+  .nav-links{display:none}
+  .nav-cta{display:none}
+  .hamburger{display:flex}
+}
+/* ── RESPONSIVE MOBILE ── */
+@media(max-width:600px){
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .hero-stats .stat:last-child{display:none}
+  .hero-btns{flex-direction:column;align-items:stretch}
+  .btn-primary{justify-content:center}
+  .card-wrap{height:240px}
+  .tbar{flex-direction:column;align-items:flex-start;gap:12px}
+  .frow{grid-template-columns:1fr}
+  .pay-opts{grid-template-columns:1fr}
+  footer{flex-direction:column;align-items:flex-start}
+  .flinks{gap:16px}
+}
+</style>
+</head>
+<body class="bar-visible">
+
+<a href="#main" class="skip">Skip to main content</a>
+
+<!-- ── TOP RATING BAR ── -->
+<div id="rating-bar" role="banner" aria-label="Customer ratings">
+  <div class="rb-left">
+    <div class="rb-stars" aria-label="4.9 out of 5 stars">
+      <span class="rb-star">★</span><span class="rb-star">★</span><span class="rb-star">★</span><span class="rb-star">★</span><span class="rb-star" style="opacity:.45">★</span>
+    </div>
+    <span class="rb-avg">4.9</span>
+    <span class="rb-text">— <span>247</span> verified reviews</span>
+  </div>
+  <button class="rb-btn" onclick="openFeedback()" aria-label="Leave a rating">⭐ Rate Us</button>
+  <button class="rb-close" onclick="dismissBar()" aria-label="Dismiss">×</button>
+</div>
+
+<div id="mnav" role="dialog" aria-label="Navigation menu" aria-modal="true">
+  <a href="#how" onclick="closeMnav()">How It Works</a>
+  <a href="#pricing" onclick="closeMnav()">Pricing</a>
+  <a href="#proof" onclick="closeMnav()">Reviews</a>
+  <a href="#free-tool" onclick="closeMnav()">Free Tool</a>
+  <a href="#" onclick="closeMnav();openFeedback();return false;" style="color:var(--gold)">⭐ Rate Us / Feedback</a>
+  <a href="#" class="m-cta" onclick="closeMnav();openModal('pro');return false;">Get My Resume Fixed →</a>
+</div>
+
+<nav role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="ResumeForge home">ResumeForge</a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#proof">Reviews</a></li>
+    <li><a href="#free-tool">Free Tool</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openFeedback()" style="margin-left:8px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:11px;letter-spacing:.12em;">⭐ Feedback</button>
+  <button class="nav-cta" onclick="openModal('pro')">Start Now</button>
+  <button class="hamburger" id="hbtn" aria-label="Open menu" aria-expanded="false" aria-controls="mnav" onclick="toggleMnav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="mtitle" onclick="overlayClick(event)">
+  <div class="mbox">
+    <button class="mclose" aria-label="Close dialog" onclick="closeModal()">×</button>
+    <div id="fstate">
+      <h2 class="mtitle" id="mtitle">Get Started</h2>
+      <p class="msub">Polished resume delivered in 48 hours, guaranteed.</p>
+      <div class="plan-pill">
+        <span id="ppill">Pro — $30</span>
+        <button onclick="jumpPricing()" aria-label="Change plan">↗ Change plan</button>
+      </div>
+      <form id="cform" novalidate onsubmit="handleSub(event)">
+        <div class="frow">
+          <div class="field">
+            <label for="ffn">First name *</label>
+            <input type="text" id="ffn" autocomplete="given-name" required aria-required="true" placeholder="Sarah">
+          </div>
+          <div class="field">
+            <label for="fln">Last name *</label>
+            <input type="text" id="fln" autocomplete="family-name" required aria-required="true" placeholder="Johnson">
+          </div>
+        </div>
+        <div class="field">
+          <label for="fem">Email address *</label>
+          <input type="email" id="fem" autocomplete="email" required aria-required="true" placeholder="sarah@email.com">
+        </div>
+        <div class="field">
+          <label for="fro">Target job title *</label>
+          <input type="text" id="fro" required aria-required="true" placeholder="e.g. Senior Product Manager">
+        </div>
+        <div class="field">
+          <label for="fli">LinkedIn URL (optional)</label>
+          <input type="url" id="fli" autocomplete="url" placeholder="https://linkedin.com/in/yourname">
+        </div>
+        <div class="field">
+          <label for="fno">Anything else? (optional)</label>
+          <textarea id="fno" placeholder="Industry, career change, seniority level…"></textarea>
+        </div>
+        <button type="submit" class="btn-sub" id="sbtn">
+          <span id="slbl">💳 Continue to Payment</span>
+          <span class="spinner" id="spin" aria-hidden="true"></span>
+        </button>
+        <p class="sec-note" aria-label="Secure payment"><span aria-hidden="true">🔒</span>Secured by Gumroad · Visa · Mastercard · Apple Pay · Google Pay</p>
+        <p class="ferr" id="ferr" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+    <div class="success-st" id="sstate" role="status" aria-live="polite">
+      <div class="sico-big" aria-hidden="true">✦</div>
+      <h3 class="stit-big">You're booked!</h3>
+      <p class="sbody">Check your inbox — we'll email you within 2 hours with a secure link to upload your current resume. Your polished version arrives in 48 hours.</p>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+
+<section class="hero" aria-labelledby="htitle">
+  <div>
+    <p class="hero-kicker">AI-Powered Resume Optimization</p>
+    <h1 class="hero-title" id="htitle">Your resume<br>is costing you<br><em>interviews.</em></h1>
+    <p class="hero-sub">We rewrite your resume using AI + human expertise to beat ATS filters and impress hiring managers — delivered in 48 hours, guaranteed.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openModal('pro')">Fix My Resume — From $9.99</button>
+      <a href="#how" class="btn-ghost">See how it works ↓</a>
+    </div>
+    <div class="hero-stats" role="list" aria-label="Key results">
+      <div class="stat" role="listitem"><div class="stat-num" aria-label="87 percent">87%</div><div class="stat-lbl">ATS pass rate</div></div>
+      <div class="stat" role="listitem"><div class="stat-num" aria-label="48 hours">48h</div><div class="stat-lbl">Delivery guaranteed</div></div>
+      <div class="stat" role="listitem"><div class="stat-num" aria-label="3 times">3×</div><div class="stat-lbl">More callbacks</div></div>
+    </div>
+  </div>
+  <div class="hero-vis" aria-hidden="true">
+    <div class="card-wrap">
+      <div class="rc before">
+        <p class="cl m">Before</p>
+        <div class="mn"></div>
+        <div class="mb w30"></div>
+        <div style="margin-top:14px"><div class="mb w100"></div><div class="mb w80"></div><div class="mb w55"></div></div>
+        <div class="sr"><span>ATS Score</span><span class="sn bad">31</span></div>
+      </div>
+      <div class="rc after">
+        <p class="cl g">After</p>
+        <div class="mn g"></div>
+        <div class="mb g w30"></div>
+        <div style="margin-top:14px"><div class="mb g w100"></div><div class="mb w80"></div><div class="mb g w55"></div></div>
+        <div class="sr"><span>ATS Score</span><span class="sn good">94</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="mq-wrap" aria-hidden="true">
+  <div class="mq-track">
+    <div class="mq-item"><span class="mq-dot"></span>ATS Optimization</div>
+    <div class="mq-item"><span class="mq-dot"></span>Keyword Matching</div>
+    <div class="mq-item"><span class="mq-dot"></span>LinkedIn Rewrite</div>
+    <div class="mq-item"><span class="mq-dot"></span>Cover Letter</div>
+    <div class="mq-item"><span class="mq-dot"></span>48h Delivery</div>
+    <div class="mq-item"><span class="mq-dot"></span>Money-Back Guarantee</div>
+    <div class="mq-item"><span class="mq-dot"></span>Human-Reviewed</div>
+    <div class="mq-item"><span class="mq-dot"></span>100+ Industries</div>
+    <div class="mq-item"><span class="mq-dot"></span>ATS Optimization</div>
+    <div class="mq-item"><span class="mq-dot"></span>Keyword Matching</div>
+    <div class="mq-item"><span class="mq-dot"></span>LinkedIn Rewrite</div>
+    <div class="mq-item"><span class="mq-dot"></span>Cover Letter</div>
+    <div class="mq-item"><span class="mq-dot"></span>48h Delivery</div>
+    <div class="mq-item"><span class="mq-dot"></span>Money-Back Guarantee</div>
+    <div class="mq-item"><span class="mq-dot"></span>Human-Reviewed</div>
+    <div class="mq-item"><span class="mq-dot"></span>100+ Industries</div>
+  </div>
+</div>
+
+<section id="how" class="section" aria-labelledby="how-h">
+  <p class="stag reveal">The Process</p>
+  <h2 class="stitle reveal" id="how-h">Simple. Fast.<br>Transformative.</h2>
+  <div class="steps" role="list">
+    <article class="step reveal" role="listitem">
+      <span class="snum" aria-hidden="true">01</span>
+      <div class="sico" aria-hidden="true">📤</div>
+      <h3 class="stit">Upload Your Resume</h3>
+      <p class="sdesc">Share your resume and your target role. Takes under 3 minutes. Any format accepted — PDF, Word, Google Docs link.</p>
+    </article>
+    <article class="step reveal" role="listitem" style="transition-delay:.1s">
+      <span class="snum" aria-hidden="true">02</span>
+      <div class="sico" aria-hidden="true">⚡</div>
+      <h3 class="stit">AI + Human Review</h3>
+      <p class="sdesc">Our AI scans against 500+ ATS systems. A human expert then rewrites every line for maximum impact and clarity.</p>
+    </article>
+    <article class="step reveal" role="listitem" style="transition-delay:.2s">
+      <span class="snum" aria-hidden="true">03</span>
+      <div class="sico" aria-hidden="true">📬</div>
+      <h3 class="stit">Receive in 48 Hours</h3>
+      <p class="sdesc">Get your polished resume, LinkedIn rewrite (Pro+), cover letter, and ATS score report — ready to send immediately.</p>
+    </article>
+  </div>
+</section>
+
+<div class="tbar" role="list" aria-label="Guarantees">
+  <div class="titem" role="listitem"><span class="tico" aria-hidden="true">🛡</span>Satisfaction Guaranteed</div>
+  <div class="titem" role="listitem"><span class="tico" aria-hidden="true">⚡</span>48-Hour Delivery</div>
+  <div class="titem" role="listitem"><span class="tico" aria-hidden="true">🔒</span>Your Data Stays Private</div>
+  <div class="titem" role="listitem"><span class="tico" aria-hidden="true">🔄</span>Free Revisions Included</div>
+</div>
+
+<section id="pricing" class="pricing-bg" aria-labelledby="price-h">
+  <div class="pricing-in">
+    <p class="stag reveal" style="justify-content:center">Pricing</p>
+    <h2 class="stitle reveal" id="price-h" style="text-align:center">One-time payment.<br>No subscriptions ever.</h2>
+    <div class="plans" role="list">
+
+      <article class="plan reveal" role="listitem" aria-label="Starter plan $9.99">
+        <h3 class="pname">Starter</h3>
+        <div class="pprice"><sup>$</sup>9<span style="font-size:24px;margin-top:12px;display:inline-block">.99</span></div>
+        <p class="pdesc">Best for entry-level roles</p>
+        <ul class="pfeats" aria-label="Starter features">
+          <li>Full resume rewrite (1 page)</li>
+          <li>ATS keyword optimization</li>
+          <li>ATS score report</li>
+          <li>48-hour delivery</li>
+          <li>1 revision round</li>
+        </ul>
+        <button class="pbtn pbtn-out" onclick="openModal('starter')" aria-label="Buy Starter for $9.99">Get Started</button>
+        <p class="pnote">Visa · Mastercard · Apple Pay · Google Pay</p>
+      </article>
+
+      <article class="plan feat reveal" role="listitem" aria-label="Pro plan $14.99 most popular" style="transition-delay:.1s">
+        <div class="pbadge">Most Popular</div>
+        <h3 class="pname">Pro</h3>
+        <div class="pprice"><sup>$</sup>14<span style="font-size:24px;margin-top:12px;display:inline-block">.99</span></div>
+        <p class="pdesc">For serious career movers</p>
+        <ul class="pfeats" aria-label="Pro features">
+          <li>Full resume rewrite (2 pages)</li>
+          <li>ATS deep-scan + score report</li>
+          <li>LinkedIn profile rewrite</li>
+          <li>Custom cover letter</li>
+          <li>48-hour delivery</li>
+          <li>3 revision rounds</li>
+        </ul>
+        <button class="pbtn pbtn-dark" onclick="openModal('pro')" aria-label="Buy Pro for $14.99">Get Started</button>
+        <p class="pnote">Visa · Mastercard · Apple Pay · Google Pay</p>
+      </article>
+
+      <article class="plan reveal" role="listitem" aria-label="Executive plan $25" style="transition-delay:.2s">
+        <h3 class="pname">Executive</h3>
+        <div class="pprice"><sup>$</sup>25</div>
+        <p class="pdesc">For senior &amp; C-suite roles</p>
+        <ul class="pfeats" aria-label="Executive features">
+          <li>Executive bio + full resume</li>
+          <li>LinkedIn top-1% rewrite</li>
+          <li>3 tailored cover letters</li>
+          <li>ATS deep-scan report</li>
+          <li>24-hour priority delivery</li>
+          <li>Unlimited revisions (7 days)</li>
+        </ul>
+        <button class="pbtn pbtn-out" onclick="openModal('executive')" aria-label="Buy Executive for $25">Get Started</button>
+        <p class="pnote">Visa · Mastercard · Apple Pay · Google Pay</p>
+      </article>
+
+    </div>
+    <div class="pay-chips" aria-label="Accepted payment methods">
+      <span>We accept:</span>
+      <span class="chip">💳 Visa</span>
+      <span class="chip">💳 Mastercard</span>
+      <span class="chip">🍎 Apple Pay</span>
+      <span class="chip">🔵 Google Pay</span>
+      <span class="chip">🇦🇪 UAE Cards</span>
+      <span class="chip">🔒 Gumroad Checkout</span>
+    </div>
+  </div>
+</section>
+
+<section id="proof" class="section" aria-labelledby="rev-h">
+  <p class="stag reveal">Reviews</p>
+  <h2 class="stitle reveal" id="rev-h">Real results from<br>real job seekers.</h2>
+  <div class="tgrid" role="list">
+    <article class="testi reveal" role="listitem">
+      <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+      <blockquote class="tquote">"3 months of silence. After ResumeForge, 4 interviews in 2 weeks. I was shaking. Worth every single penny."</blockquote>
+      <div class="tauth">
+        <div class="avatar" aria-hidden="true">👩</div>
+        <div><p class="aname">Priya K.</p><p class="arole">Now: SWE @ Meta</p></div>
+      </div>
+    </article>
+    <article class="testi reveal" role="listitem" style="transition-delay:.1s">
+      <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+      <blockquote class="tquote">"The LinkedIn rewrite got me two recruiter messages in the first week. Incredibly fast and seamless service."</blockquote>
+      <div class="tauth">
+        <div class="avatar" aria-hidden="true">👨</div>
+        <div><p class="aname">Marcus T.</p><p class="arole">Now: PM @ Stripe</p></div>
+      </div>
+    </article>
+    <article class="testi reveal" role="listitem" style="transition-delay:.2s">
+      <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+      <blockquote class="tquote">"ATS score went from 29 to 91. I had no idea how badly my resume was failing. Total game changer."</blockquote>
+      <div class="tauth">
+        <div class="avatar" aria-hidden="true">👩</div>
+        <div><p class="aname">Amara N.</p><p class="arole">Now: Marketing Director @ Shopify</p></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="cta-sec" aria-labelledby="cta-h">
+  <p class="ctag">Limited spots this week</p>
+  <h2 class="ctitle" id="cta-h">Your next job starts<br>with a better resume.</h2>
+  <p class="csub">Join 500+ professionals who tripled their interview callbacks.</p>
+  <button class="cta-btn" onclick="openModal('pro')" aria-label="Get your resume fixed starting from $15">
+    Get My Resume Fixed — From $9.99
+  </button>
+</section>
+
+<!-- ── FREE TOOL SECTION ── -->
+<section id="free-tool" aria-labelledby="free-h" style="background:linear-gradient(180deg,var(--black) 0%,#0d0d0a 100%);padding:clamp(56px,10vw,112px) var(--pad);border-top:1px solid var(--border)">
+  <div style="max-width:var(--max-w);margin:0 auto">
+    <p class="stag reveal" style="justify-content:center">Free Tool</p>
+    <h2 class="stitle reveal" id="free-h" style="text-align:center;margin-bottom:12px">Generate Your Resume<br><em style="font-style:italic;color:var(--gold)">with AI — Instantly Free</em></h2>
+    <p class="reveal" style="text-align:center;color:var(--muted);font-size:14px;margin-bottom:52px;max-width:520px;margin-left:auto;margin-right:auto">Fill in your details and our AI builds you a clean, basic resume in seconds. Want a full ATS-optimized version? Upgrade to a paid plan.</p>
+
+    <div style="max-width:760px;margin:0 auto">
+
+      <!-- INPUT FORM -->
+      <div id="ft-form" class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden">
+        <!-- Progress bar -->
+        <div style="background:var(--black);padding:20px 28px 0;border-bottom:1px solid var(--border)">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+            <div class="ft-step-dot active" id="ftd1" style="width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--black);font-family:'DM Mono',monospace;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0">1</div>
+            <div style="flex:1;height:1px;background:var(--border)" id="ftline1"></div>
+            <div class="ft-step-dot" id="ftd2" style="width:28px;height:28px;border-radius:50%;background:var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0">2</div>
+            <div style="flex:1;height:1px;background:var(--border)" id="ftline2"></div>
+            <div class="ft-step-dot" id="ftd3" style="width:28px;height:28px;border-radius:50%;background:var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0">3</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-bottom:16px">
+            <span>Personal</span><span style="text-align:center">Experience</span><span style="text-align:right">Skills</span>
+          </div>
+        </div>
+
+        <div style="padding:clamp(20px,4vw,36px)">
+
+          <!-- Step 1: Personal Info -->
+          <div id="ft-s1">
+            <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px">Step 1 of 3 — Personal Info</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+              <div>
+                <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Full Name *</label>
+                <input id="ft-name" type="text" placeholder="e.g. Sarah Johnson" class="ft-input">
+              </div>
+              <div>
+                <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Target Job Title *</label>
+                <input id="ft-title" type="text" placeholder="e.g. Marketing Manager" class="ft-input">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+              <div>
+                <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Email</label>
+                <input id="ft-email" type="email" placeholder="you@email.com" class="ft-input">
+              </div>
+              <div>
+                <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Phone</label>
+                <input id="ft-phone" type="text" placeholder="+971 50 000 0000" class="ft-input">
+              </div>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Location</label>
+              <input id="ft-location" type="text" placeholder="e.g. Dubai, UAE" class="ft-input">
+            </div>
+            <div style="margin-bottom:20px">
+              <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Professional Summary <span style="opacity:.5">(optional — or we'll write one for you)</span></label>
+              <textarea id="ft-summary" placeholder="A brief summary about yourself…" class="ft-input" style="min-height:72px;resize:vertical"></textarea>
+            </div>
+            <p id="ft-err1" style="color:var(--rust);font-size:13px;margin-bottom:12px;display:none">Please enter your name and target job title.</p>
+            <button onclick="ftNext(1)" class="ft-btn-next">Continue → Experience</button>
+          </div>
+
+          <!-- Step 2: Experience -->
+          <div id="ft-s2" style="display:none">
+            <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px">Step 2 of 3 — Work Experience</p>
+            <div id="ft-exp-list"></div>
+            <button onclick="ftAddExp()" style="width:100%;padding:11px;background:transparent;color:var(--gold);border:1px dashed var(--gold);border-radius:var(--r);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .25s;margin-bottom:20px" onmouseover="this.style.background='rgba(201,168,76,.06)'" onmouseout="this.style.background='transparent'">+ Add Another Job</button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+              <div>
+                <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Highest Education</label>
+                <input id="ft-edu" type="text" placeholder="e.g. BSc Business, AUC 2020" class="ft-input">
+              </div>
+              <div>
+                <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Certifications <span style="opacity:.5">(comma-separated)</span></label>
+                <input id="ft-certs" type="text" placeholder="e.g. Google Analytics, PMP" class="ft-input">
+              </div>
+            </div>
+            <p id="ft-err2" style="color:var(--rust);font-size:13px;margin-bottom:12px;display:none">Please add at least one job or educational background.</p>
+            <div style="display:flex;gap:10px">
+              <button onclick="ftBack(2)" style="padding:14px 20px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .25s">← Back</button>
+              <button onclick="ftNext(2)" class="ft-btn-next" style="flex:1">Continue → Skills</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Skills -->
+          <div id="ft-s3" style="display:none">
+            <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:20px">Step 3 of 3 — Skills & Languages</p>
+            <div style="margin-bottom:14px">
+              <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Key Skills * <span style="opacity:.5">(comma-separated)</span></label>
+              <textarea id="ft-skills" placeholder="e.g. Project Management, Excel, SEO, Canva, Customer Service…" class="ft-input" style="min-height:80px;resize:vertical"></textarea>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Languages <span style="opacity:.5">(e.g. English – Fluent, Arabic – Native)</span></label>
+              <input id="ft-langs" type="text" placeholder="English – Fluent, Arabic – Native" class="ft-input">
+            </div>
+            <div style="margin-bottom:20px">
+              <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:7px">Tone / Style</label>
+              <select id="ft-tone" class="ft-input" style="background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7060' stroke-width='1.5' fill='none'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px">
+                <option value="professional">Professional & Corporate</option>
+                <option value="creative">Creative & Dynamic</option>
+                <option value="concise">Concise & Results-Focused</option>
+              </select>
+            </div>
+            <p id="ft-err3" style="color:var(--rust);font-size:13px;margin-bottom:12px;display:none">Please enter at least a few skills.</p>
+            <div style="display:flex;gap:10px">
+              <button onclick="ftBack(3)" style="padding:14px 20px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .25s">← Back</button>
+              <button onclick="ftGenerate()" id="ft-gen-btn" class="ft-btn-next" style="flex:1;display:flex;align-items:center;justify-content:center;gap:10px">
+                <span id="ft-gen-lbl">✨ Generate My Resume</span>
+                <span id="ft-gen-spin" style="display:none;width:15px;height:15px;border:2px solid rgba(0,0,0,.3);border-top-color:var(--black);border-radius:50%;animation:spin .7s linear infinite"></span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- LOADING ANIMATION -->
+      <div id="ft-loading" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:clamp(32px,6vw,64px);text-align:center">
+        <div id="ft-loader-ring" style="width:72px;height:72px;margin:0 auto 28px;position:relative">
+          <svg viewBox="0 0 72 72" style="width:72px;height:72px;animation:spin 1.4s linear infinite">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--border)" stroke-width="3"/>
+            <circle cx="36" cy="36" r="30" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-dasharray="60 130" stroke-dashoffset="0"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px">✦</div>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:10px">Building your resume…</h3>
+        <p id="ft-load-msg" style="font-size:13px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.08em">Analyzing your experience</p>
+        <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px;max-width:320px;margin-left:auto;margin-right:auto" id="ft-progress-bars">
+          <div style="background:var(--border);border-radius:3px;height:4px;overflow:hidden"><div id="ftpb1" style="height:100%;background:var(--gold);width:0%;transition:width 1.2s ease;border-radius:3px"></div></div>
+          <div style="background:var(--border);border-radius:3px;height:4px;overflow:hidden"><div id="ftpb2" style="height:100%;background:var(--gold);width:0%;transition:width 1.8s ease;border-radius:3px"></div></div>
+          <div style="background:var(--border);border-radius:3px;height:4px;overflow:hidden"><div id="ftpb3" style="height:100%;background:var(--gold);width:0%;transition:width 2.4s ease;border-radius:3px"></div></div>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div id="ft-result" style="display:none">
+        <!-- Resume preview -->
+        <div id="ft-resume-card" style="background:#faf9f6;color:#1a1a1a;border-radius:10px;padding:clamp(28px,5vw,52px);font-family:'Outfit',sans-serif;line-height:1.7;box-shadow:0 20px 80px rgba(0,0,0,.5);animation:fadeUp .6s ease both"></div>
+
+        <!-- Actions -->
+        <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+          <button onclick="ftCopyResume()" id="ft-copy-btn" style="flex:1;min-width:140px;padding:13px;background:var(--card);color:var(--offwhite);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .25s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">📋 Copy Text</button>
+          <button onclick="ftReset()" style="flex:1;min-width:140px;padding:13px;background:var(--card);color:var(--muted);border:1px solid var(--border);border-radius:var(--r);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .25s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">↺ Start Over</button>
+        </div>
+
+        <!-- Upsell -->
+        <div style="margin-top:16px;background:linear-gradient(135deg,#1c1a0a,#1a1a10);border:1px solid var(--gold);border-radius:10px;padding:24px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:16px;justify-content:space-between">
+          <div>
+            <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px">⚡ Want The Real Deal?</p>
+            <p style="font-size:13px;color:var(--cream);line-height:1.6;max-width:380px">This is a basic template. Our paid plans include full ATS keyword targeting, human expert review, LinkedIn rewrite & a cover letter — delivered in 48h.</p>
+          </div>
+          <button onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})" style="background:var(--gold);color:var(--black);border:none;border-radius:var(--r);padding:13px 24px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .25s" onmouseover="this.style.background='var(--gold2)'" onmouseout="this.style.background='var(--gold)'">See Plans — From $9.99</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FEEDBACK MODAL ── -->
+<div id="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="fb-title" style="position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);z-index:700;display:none;align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)closeFeedback()">
+  <div style="background:var(--dark);border:1px solid var(--border);border-radius:var(--r);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:clamp(24px,5vw,44px);position:relative;animation:scaleIn .35s cubic-bezier(.23,1,.32,1)">
+    <button onclick="closeFeedback()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1;padding:4px 8px;border-radius:var(--r);transition:color .2s" onmouseover="this.style.color='var(--offwhite)'" onmouseout="this.style.color='var(--muted)'">×</button>
+
+    <div id="fb-form-state">
+      <h2 id="fb-title" style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:6px">Rate Your Experience</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Your feedback helps us improve ResumeForge for everyone.</p>
+
+      <!-- Star rating -->
+      <p style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Your Rating *</p>
+      <div id="star-row" style="display:flex;gap:6px;margin-bottom:24px">
+        <span class="fb-star" data-v="1" onclick="setRating(1)" style="font-size:32px;cursor:pointer;transition:transform .15s;filter:grayscale(1);opacity:.4" onmouseover="hoverRating(1)" onmouseout="unhoverRating()">★</span>
+        <span class="fb-star" data-v="2" onclick="setRating(2)" style="font-size:32px;cursor:pointer;transition:transform .15s;filter:grayscale(1);opacity:.4" onmouseover="hoverRating(2)" onmouseout="unhoverRating()">★</span>
+        <span class="fb-star" data-v="3" onclick="setRating(3)" style="font-size:32px;cursor:pointer;transition:transform .15s;filter:grayscale(1);opacity:.4" onmouseover="hoverRating(3)" onmouseout="unhoverRating()">★</span>
+        <span class="fb-star" data-v="4" onclick="setRating(4)" style="font-size:32px;cursor:pointer;transition:transform .15s;filter:grayscale(1);opacity:.4" onmouseover="hoverRating(4)" onmouseout="unhoverRating()">★</span>
+        <span class="fb-star" data-v="5" onclick="setRating(5)" style="font-size:32px;cursor:pointer;transition:transform .15s;filter:grayscale(1);opacity:.4" onmouseover="hoverRating(5)" onmouseout="unhoverRating()">★</span>
+      </div>
+
+      <div class="field" style="margin-bottom:16px">
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:7px" for="fb-name">Your Name</label>
+        <input type="text" id="fb-name" placeholder="e.g. Sarah J." style="width:100%;background:var(--black);border:1px solid var(--border);color:var(--offwhite);padding:12px 14px;font-family:'Outfit',sans-serif;font-size:15px;outline:none;border-radius:var(--r);transition:border-color .25s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div class="field" style="margin-bottom:16px">
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:7px" for="fb-email">Your Email * <span style="opacity:.5">(so we can follow up)</span></label>
+        <input type="email" id="fb-email" placeholder="you@email.com" style="width:100%;background:var(--black);border:1px solid var(--border);color:var(--offwhite);padding:12px 14px;font-family:'Outfit',sans-serif;font-size:15px;outline:none;border-radius:var(--r);transition:border-color .25s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div class="field" style="margin-bottom:20px">
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:7px" for="fb-msg">Your Feedback *</label>
+        <textarea id="fb-msg" placeholder="Tell us about your experience with ResumeForge…" style="width:100%;min-height:100px;background:var(--black);border:1px solid var(--border);color:var(--offwhite);padding:12px 14px;font-family:'Outfit',sans-serif;font-size:15px;outline:none;border-radius:var(--r);resize:vertical;transition:border-color .25s" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+
+      <p id="fb-err" style="color:var(--rust);font-size:13px;margin-bottom:12px;display:none"></p>
+
+      <button onclick="submitFeedback()" id="fb-submit-btn" style="width:100%;padding:15px;background:var(--gold);color:var(--black);border:none;border-radius:var(--r);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .25s;display:flex;align-items:center;justify-content:center;gap:8px">
+        <span id="fb-btn-lbl">Send Feedback</span>
+        <span id="fb-spin" style="display:none;width:15px;height:15px;border:2px solid rgba(0,0,0,.3);border-top-color:var(--black);border-radius:50%;animation:spin .7s linear infinite"></span>
+      </button>
+    </div>
+
+    <div id="fb-success-state" style="display:none;text-align:center;padding:24px 0">
+      <div style="font-size:52px;margin-bottom:16px">🌟</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:26px;margin-bottom:10px">Thank you!</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7">Your feedback means a lot to us. We read every single message and use it to make ResumeForge better.</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer role="contentinfo">
+  <span class="flogo">ResumeForge</span>
+  <nav class="flinks" aria-label="Footer links">
+    <a href="#" onclick="showPrivacy();return false;">Privacy</a>
+    <a href="#" onclick="showTerms();return false;">Terms</a>
+    <a href="#" onclick="showContact();return false;">Contact</a>
+    <a href="#" onclick="openModal('pro');return false;">Get Started</a>
+  </nav>
+  <span class="fcopy">© 2025 ResumeForge</span>
+</footer>
+
+<script>
+/* ── Gemini API Key ── */
+const GEMINI_API_KEY = 'AIzaSyDqkAkYpTBYctnE1hETn7qLV2QG99SAlxE';
+
+const GUMROAD = {
+  starter:   'https://abdelmawlafreelance.gumroad.com/l/resumeforge-starter',
+  pro:       'https://abdelmawlafreelance.gumroad.com/l/resumeforge-pro',
+  executive: 'https://abdelmawlafreelance.gumroad.com/l/resumeforge-executive',
+};
+
+const PLANS = {
+  starter:   {label:'Starter',   price:'$9.99'},
+  pro:       {label:'Pro',       price:'$14.99'},
+  executive: {label:'Executive', price:'$25'},
+};
+
+let plan = 'pro';
+
+/* ── Modal ── */
+function openModal(p='pro'){
+  plan = p;
+  document.getElementById('ppill').textContent = PLANS[p].label+' — '+PLANS[p].price;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('fstate').style.display='';
+  document.getElementById('sstate').style.display='none';
+  document.getElementById('ferr').style.display='none';
+  setLoad(false);
+  setTimeout(()=>document.getElementById('ffn').focus(),80);
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function overlayClick(e){if(e.target===document.getElementById('modal'))closeModal();}
+function jumpPricing(){closeModal();document.getElementById('pricing').scrollIntoView({behavior:'smooth'});}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ── Form submit ── */
+function handleSub(e){
+  e.preventDefault();
+  if(!validate())return;
+  go();
+}
+
+function validate(){
+  const fn=document.getElementById('ffn').value.trim();
+  const ln=document.getElementById('fln').value.trim();
+  const em=document.getElementById('fem').value.trim();
+  const ro=document.getElementById('fro').value.trim();
+  if(!fn||!ln){showErr('Please enter your full name.');return false;}
+  if(!em||!/\S+@\S+\.\S+/.test(em)){showErr('Please enter a valid email address.');return false;}
+  if(!ro){showErr('Please enter your target job title.');return false;}
+  document.getElementById('ferr').style.display='none';
+  return true;
+}
+function showErr(m){const e=document.getElementById('ferr');e.textContent=m;e.style.display='block';}
+
+function go(){
+  setLoad(true);
+  const url = GUMROAD[plan];
+  
+  /* pass email to Gumroad prefill */
+  const email = encodeURIComponent(document.getElementById('fem').value.trim());
+  const dest  = url+'?wanted=true&email='+email;
+  setTimeout(()=>{window.location.href=dest;},500);
+}
+
+function setLoad(on){
+  document.getElementById('slbl').textContent=on?'Redirecting to checkout…':'💳 Continue to Payment';
+  document.getElementById('spin').style.display=on?'block':'none';
+  document.getElementById('sbtn').disabled=on;
+}
+function showSuccess(){
+  document.getElementById('fstate').style.display='none';
+  document.getElementById('sstate').style.display='block';
+}
+
+/* ── Mobile nav ── */
+function toggleMnav(){
+  const n=document.getElementById('mnav');
+  const b=document.getElementById('hbtn');
+  const o=n.classList.toggle('open');
+  b.setAttribute('aria-expanded',o);
+  document.body.style.overflow=o?'hidden':'';
+}
+function closeMnav(){
+  document.getElementById('mnav').classList.remove('open');
+  document.getElementById('hbtn').setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+}
+
+/* ── Scroll reveal ── */
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');obs.unobserve(x.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── Feedback Modal ── */
+let currentRating = 0;
+
+function openFeedback(){
+  document.getElementById('feedback-modal').style.display='flex';
+  document.body.style.overflow='hidden';
+  document.getElementById('fb-form-state').style.display='';
+  document.getElementById('fb-success-state').style.display='none';
+  document.getElementById('fb-err').style.display='none';
+  currentRating=0;
+  renderStars(0);
+}
+function closeFeedback(){
+  document.getElementById('feedback-modal').style.display='none';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeFeedback();}});
+
+function setRating(v){ currentRating=v; renderStars(v); }
+function hoverRating(v){ renderStars(v,true); }
+function unhoverRating(){ renderStars(currentRating); }
+function renderStars(v,hover=false){
+  document.querySelectorAll('.fb-star').forEach((s,i)=>{
+    const on=i<v;
+    s.style.color=on?'var(--gold)':'var(--muted)';
+    s.style.filter=on?'none':'grayscale(1)';
+    s.style.opacity=on?'1':'0.4';
+    s.style.transform=hover&&on?'scale(1.15)':'scale(1)';
+  });
+}
+
+async function submitFeedback(){
+  const name=document.getElementById('fb-name').value.trim();
+  const email=document.getElementById('fb-email').value.trim();
+  const msg=document.getElementById('fb-msg').value.trim();
+  const errEl=document.getElementById('fb-err');
+
+  if(!currentRating){errEl.textContent='Please select a star rating.';errEl.style.display='block';return;}
+  if(!email||!/\S+@\S+\.\S+/.test(email)){errEl.textContent='Please enter a valid email address.';errEl.style.display='block';return;}
+  if(!msg){errEl.textContent='Please write your feedback.';errEl.style.display='block';return;}
+  errEl.style.display='none';
+
+  const btn=document.getElementById('fb-submit-btn');
+  document.getElementById('fb-btn-lbl').textContent='Sending…';
+  document.getElementById('fb-spin').style.display='block';
+  btn.disabled=true;
+
+  /* Send via EmailJS public API - uses mailto fallback */
+  const stars='★'.repeat(currentRating)+'☆'.repeat(5-currentRating);
+  const subject=encodeURIComponent(`ResumeForge Feedback — ${stars} from ${name||email}`);
+  const body=encodeURIComponent(`Rating: ${stars} (${currentRating}/5)\nName: ${name||'Not provided'}\nEmail: ${email}\n\nFeedback:\n${msg}`);
+
+  /* Try Web3Forms (free, no sign-up needed for basic use) */
+  try {
+    const res = await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        access_key:'YOUR_WEB3FORMS_KEY', /* Placeholder — replace with real key */
+        subject:`ResumeForge Feedback — ${stars}`,
+        from_name: name||'Anonymous',
+        email: email,
+        message: `Rating: ${currentRating}/5 stars\nFrom: ${name||'N/A'} <${email}>\n\n${msg}`,
+        to_email: 'helloresumeforge@gmail.com'
+      })
+    });
+    const data=await res.json();
+    if(data.success){
+      showFbSuccess();return;
+    }
+  } catch(e){}
+
+  /* Fallback: open mailto */
+  window.location.href=`mailto:helloresumeforge@gmail.com?subject=${subject}&body=${body}`;
+  showFbSuccess();
+}
+
+function showFbSuccess(){
+  document.getElementById('fb-form-state').style.display='none';
+  document.getElementById('fb-success-state').style.display='block';
+  document.getElementById('fb-submit-btn').disabled=false;
+  document.getElementById('fb-btn-lbl').textContent='Send Feedback';
+  document.getElementById('fb-spin').style.display='none';
+}
+
+/* ── Free Resume Generator ── */
+let ftExpCount = 0;
+const ftLoadMsgs = [
+  'Analyzing your experience…',
+  'Crafting your summary…',
+  'Optimizing bullet points…',
+  'Formatting your resume…',
+  'Almost ready…'
+];
+
+function ftAddExp(){
+  ftExpCount++;
+  const id = 'ftexp'+ftExpCount;
+  const div = document.createElement('div');
+  div.id = id;
+  div.style.cssText = 'background:var(--black);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;position:relative';
+  div.innerHTML = `
+    ${ftExpCount>1?`<button onclick="document.getElementById('${id}').remove()" style="position:absolute;top:10px;right:10px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:2px 6px" title="Remove">×</button>`:''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">
+      <div>
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Job Title</label>
+        <input type="text" placeholder="e.g. Sales Executive" class="ft-input ftexp-role" style="font-size:14px;padding:10px 12px">
+      </div>
+      <div>
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Company</label>
+        <input type="text" placeholder="e.g. Acme Corp" class="ft-input ftexp-company" style="font-size:14px;padding:10px 12px">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px">
+      <div>
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Duration</label>
+        <input type="text" placeholder="e.g. Jan 2021 – Present" class="ft-input ftexp-dates" style="font-size:14px;padding:10px 12px">
+      </div>
+      <div>
+        <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Location</label>
+        <input type="text" placeholder="e.g. Dubai, UAE" class="ft-input ftexp-loc" style="font-size:14px;padding:10px 12px">
+      </div>
+    </div>
+    <div>
+      <label style="display:block;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Key Responsibilities / Achievements</label>
+      <textarea placeholder="What did you do? What did you achieve? (e.g. Managed a team of 5, increased sales by 30%…)" class="ft-input ftexp-desc" style="min-height:72px;resize:vertical;font-size:14px;padding:10px 12px"></textarea>
+    </div>`;
+  document.getElementById('ft-exp-list').appendChild(div);
+}
+
+function ftNext(step){
+  if(step===1){
+    const name=document.getElementById('ft-name').value.trim();
+    const title=document.getElementById('ft-title').value.trim();
+    if(!name||!title){document.getElementById('ft-err1').style.display='block';return;}
+    document.getElementById('ft-err1').style.display='none';
+    document.getElementById('ft-s1').style.display='none';
+    document.getElementById('ft-s2').style.display='block';
+    if(ftExpCount===0)ftAddExp();
+    ftUpdateDots(2);
+  } else if(step===2){
+    const edu=document.getElementById('ft-edu').value.trim();
+    const hasExp=document.querySelectorAll('.ftexp-role').length>0;
+    if(!hasExp&&!edu){document.getElementById('ft-err2').style.display='block';return;}
+    document.getElementById('ft-err2').style.display='none';
+    document.getElementById('ft-s2').style.display='none';
+    document.getElementById('ft-s3').style.display='block';
+    ftUpdateDots(3);
+  }
+}
+
+function ftBack(step){
+  if(step===2){
+    document.getElementById('ft-s2').style.display='none';
+    document.getElementById('ft-s1').style.display='block';
+    ftUpdateDots(1);
+  } else if(step===3){
+    document.getElementById('ft-s3').style.display='none';
+    document.getElementById('ft-s2').style.display='block';
+    ftUpdateDots(2);
+  }
+}
+
+function ftUpdateDots(active){
+  [1,2,3].forEach(i=>{
+    const d=document.getElementById('ftd'+i);
+    if(i<active){d.style.background='var(--green)';d.style.color='white';d.textContent='✓';}
+    else if(i===active){d.style.background='var(--gold)';d.style.color='var(--black)';d.textContent=i;}
+    else{d.style.background='var(--border)';d.style.color='var(--muted)';d.textContent=i;}
+  });
+}
+
+async function ftGenerate(){
+  const skills=document.getElementById('ft-skills').value.trim();
+  if(!skills||skills.length<3){document.getElementById('ft-err3').style.display='block';return;}
+  document.getElementById('ft-err3').style.display='none';
+
+  // Gather all data
+  const name=document.getElementById('ft-name').value.trim();
+  const title=document.getElementById('ft-title').value.trim();
+  const email=document.getElementById('ft-email').value.trim();
+  const phone=document.getElementById('ft-phone').value.trim();
+  const location=document.getElementById('ft-location').value.trim();
+  const summary=document.getElementById('ft-summary').value.trim();
+  const edu=document.getElementById('ft-edu').value.trim();
+  const certs=document.getElementById('ft-certs').value.trim();
+  const langs=document.getElementById('ft-langs').value.trim();
+  const tone=document.getElementById('ft-tone').value;
+
+  const expItems=[];
+  document.querySelectorAll('#ft-exp-list > div').forEach(div=>{
+    const role=div.querySelector('.ftexp-role')?.value.trim();
+    const company=div.querySelector('.ftexp-company')?.value.trim();
+    const dates=div.querySelector('.ftexp-dates')?.value.trim();
+    const loc=div.querySelector('.ftexp-loc')?.value.trim();
+    const desc=div.querySelector('.ftexp-desc')?.value.trim();
+    if(role||company)expItems.push({role,company,dates,loc,desc});
+  });
+
+  // Show loading
+  document.getElementById('ft-form').style.display='none';
+  document.getElementById('ft-loading').style.display='block';
+
+  // Animate progress bars
+  setTimeout(()=>{document.getElementById('ftpb1').style.width='85%';},100);
+  setTimeout(()=>{document.getElementById('ftpb2').style.width='70%';},400);
+  setTimeout(()=>{document.getElementById('ftpb3').style.width='55%';},700);
+
+  let msgIdx=0;
+  const msgInterval=setInterval(()=>{
+    msgIdx=(msgIdx+1)%ftLoadMsgs.length;
+    document.getElementById('ft-load-msg').textContent=ftLoadMsgs[msgIdx];
+  },1800);
+
+  const expText=expItems.map(e=>`- Role: ${e.role||'N/A'}, Company: ${e.company||'N/A'}, Dates: ${e.dates||'N/A'}, Location: ${e.loc||'N/A'}, Description: ${e.desc||'N/A'}`).join('\n');
+
+  const prompt=`You are a resume writer. Generate a clean, basic resume for a job seeker. Keep it simple — good formatting but NOT fully ATS-optimized (that's for paid plans). Tone: ${tone}.
+
+Candidate Info:
+- Name: ${name}
+- Target Role: ${title}
+- Email: ${email||'not provided'}
+- Phone: ${phone||'not provided'}
+- Location: ${location||'not provided'}
+- Summary request: ${summary||'write a 2-sentence professional summary based on the info'}
+- Education: ${edu||'not provided'}
+- Certifications: ${certs||'none'}
+- Skills: ${skills}
+- Languages: ${langs||'not provided'}
+- Work Experience:
+${expText||'No experience provided — mention entry-level or fresh graduate if relevant'}
+
+Return ONLY a JSON object (no markdown, no backticks) with this exact structure:
+{
+  "name": "...",
+  "title": "...",
+  "contact": {"email":"...","phone":"...","location":"..."},
+  "summary": "2-3 sentence professional summary",
+  "experience": [{"role":"...","company":"...","dates":"...","location":"...","bullets":["bullet 1","bullet 2","bullet 3"]}],
+  "skills": ["skill1","skill2",...],
+  "education": "...",
+  "certifications": ["cert1","cert2"],
+  "languages": ["lang1","lang2"]
+}
+
+For the bullets, write 2-3 strong action-verb led bullet points per role based on the description. Keep everything realistic and professional. Skills array should be individual skill strings. If certifications or languages are empty, return empty arrays.`;
+
+  try{
+    const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[{text:prompt}]}],
+        generationConfig:{temperature:0.7,maxOutputTokens:1500}
+      })
+    });
+    const data=await response.json();
+    clearInterval(msgInterval);
+    document.getElementById('ftpb1').style.width='100%';
+    document.getElementById('ftpb2').style.width='100%';
+    document.getElementById('ftpb3').style.width='100%';
+
+    const rawText=data.candidates[0].content.parts[0].text.trim();
+    const cleanText=rawText.replace(/```json|```/g,'').trim();
+    const resume=JSON.parse(cleanText);
+
+    setTimeout(()=>{
+      document.getElementById('ft-loading').style.display='none';
+      renderResume(resume);
+    },600);
+
+  }catch(err){
+    clearInterval(msgInterval);
+    document.getElementById('ft-loading').style.display='none';
+    document.getElementById('ft-form').style.display='block';
+    document.getElementById('ft-err3').textContent='Something went wrong. Please try again.';
+    document.getElementById('ft-err3').style.display='block';
+  }
+}
+
+function renderResume(r){
+  const contact=[r.contact?.email,r.contact?.phone,r.contact?.location].filter(Boolean).join(' · ');
+  const expHtml=(r.experience||[]).map(e=>`
+    <div class="exp-item">
+      <div class="exp-header">
+        <span class="exp-role">${e.role||''}</span>
+        <span class="exp-dates">${e.dates||''}</span>
+      </div>
+      <div class="exp-company">${[e.company,e.location].filter(Boolean).join(' · ')}</div>
+      <ul class="exp-bullets">${(e.bullets||[]).map(b=>`<li>${b}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  const skillsHtml=(r.skills||[]).map(s=>`<span class="skill-tag">${s}</span>`).join('');
+  const certsHtml=(r.certifications||[]).filter(Boolean).join('<br>');
+  const langsHtml=(r.languages||[]).filter(Boolean).join('<br>');
+
+  document.getElementById('ft-resume-card').innerHTML=`
+    <h1>${r.name||''}</h1>
+    <div style="font-size:14px;color:#666;margin-bottom:4px;font-weight:500">${r.title||''}</div>
+    <div class="resume-contact">${contact}</div>
+    ${r.summary?`<div class="resume-section"><div class="resume-section-title">Professional Summary</div><div class="resume-summary">${r.summary}</div></div>`:''}
+    ${expHtml?`<div class="resume-section"><div class="resume-section-title">Work Experience</div>${expHtml}</div>`:''}
+    ${r.education?`<div class="resume-section"><div class="resume-section-title">Education</div><div style="font-size:13px;color:#333">${r.education}</div></div>`:''}
+    ${skillsHtml?`<div class="resume-section"><div class="resume-section-title">Skills</div><div class="skills-wrap">${skillsHtml}</div></div>`:''}
+    ${certsHtml?`<div class="resume-section"><div class="resume-section-title">Certifications</div><div class="cert-list">${certsHtml}</div></div>`:''}
+    ${langsHtml?`<div class="resume-section"><div class="resume-section-title">Languages</div><div class="lang-list">${langsHtml}</div></div>`:''}
+    <div class="free-watermark">Generated by ResumeForge Free Tool · Upgrade for ATS-optimized version</div>`;
+
+  document.getElementById('ft-result').style.display='block';
+  document.getElementById('ft-result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function ftCopyResume(){
+  const el=document.getElementById('ft-resume-card');
+  const text=el.innerText||el.textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById('ft-copy-btn');
+    btn.textContent='✓ Copied!';
+    btn.style.borderColor='var(--green)';
+    btn.style.color='var(--green)';
+    setTimeout(()=>{btn.textContent='📋 Copy Text';btn.style.borderColor='var(--border)';btn.style.color='var(--offwhite)';},2000);
+  });
+}
+
+function ftReset(){
+  document.getElementById('ft-result').style.display='none';
+  document.getElementById('ft-form').style.display='block';
+  document.getElementById('ft-s1').style.display='block';
+  document.getElementById('ft-s2').style.display='none';
+  document.getElementById('ft-s3').style.display='none';
+  document.getElementById('ft-exp-list').innerHTML='';
+  ftExpCount=0;
+  ['ft-name','ft-title','ft-email','ft-phone','ft-location','ft-summary','ft-edu','ft-certs','ft-skills','ft-langs'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.value='';
+  });
+  ftUpdateDots(1);
+  ['ftpb1','ftpb2','ftpb3'].forEach(id=>document.getElementById(id).style.width='0%');
+  document.getElementById('free-tool').scrollIntoView({behavior:'smooth'});
+}
+
+
+function showPrivacy(){
+  alert('Privacy Policy\n\nWe only collect name, email and resume content needed to deliver your service. We never sell your data. Resumes are deleted after 30 days.');
+}
+function showTerms(){
+  alert('Terms of Service\n\nPayment is due upfront. We guarantee 48-hour delivery or a full refund. Revisions are included per plan. One-time payment — no subscription.');
+}
+function showContact(){
+  alert('Contact Us\n\nQuestions? Email us at helloresumeforge@gmail.com.\nWe typically respond within 2-4 hours.');
+}
+</script>
+</body>
+</html>
